@@ -1458,6 +1458,9 @@ char * os::native_path(char *path) {
 // page size which again depends on the concrete system the VM is running
 // on. Space for libc guard pages is not included in this size.
 jint os::Posix::set_minimum_stack_sizes() {
+#ifndef PTHREAD_STACK_MIN
+#define PTHREAD_STACK_MIN 1UL << 14 // 16KB
+#endif
   size_t os_min_stack_allowed = SOLARIS_ONLY(thr_min_stack()) NOT_SOLARIS(PTHREAD_STACK_MIN);
 
   _java_thread_min_stack_allowed = _java_thread_min_stack_allowed +
